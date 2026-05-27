@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoxCode AI Compiler</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-grid"></div>
+    <header class="site-header">
+        <div class="brand-block">
+            <div class="brand-chip">College Compiler Design Project</div>
+            <h1>VoxCode AI Compiler</h1>
+            <p class="tagline">Speak. Generate. Compile. Execute.</p>
+            <p class="intro-copy">
+                A friendly coding lab where spoken programming ideas become editable source code, run inside a compiler-style
+                workspace, and return clean output or errors for your project demo.
+            </p>
+            <div class="hero-actions">
+                <a class="primary-btn" href="#compiler">Try Compiler</a>
+                <a class="secondary-btn" href="#about">Learn More</a>
+            </div>
+        </div>
+        <div class="hero-panel">
+            <div class="hero-panel-header">
+                <span>Live Project Flow</span>
+                <span class="status-pill ready">READY</span>
+            </div>
+            <div class="pipeline-list">
+                <div class="pipeline-step"><span>01</span><p>Speak or type an idea</p></div>
+                <div class="pipeline-step"><span>02</span><p>AI understands the task</p></div>
+                <div class="pipeline-step"><span>03</span><p>Code appears in editor</p></div>
+                <div class="pipeline-step"><span>04</span><p>Run the current code</p></div>
+                <div class="pipeline-step"><span>05</span><p>Read output or errors</p></div>
+                <div class="pipeline-step"><span>06</span><p>Refine and explain</p></div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="compiler" class="compiler-shell">
+            <div class="section-heading">
+                <span class="section-label">Compiler Workspace</span>
+                <h2>Build code by speaking naturally</h2>
+                <p>Use voice or text, review the generated code, edit it like a normal program, then run it and inspect the result.</p>
+            </div>
+            <div class="status-bar" id="statusBar">
+                <div><span class="status-title">System Status</span><strong id="statusText">Ready</strong></div>
+                <div><span class="status-title">Compiler Message</span><strong id="compilerStatus">Awaiting instruction</strong></div>
+                <div><span class="status-title">Backend Health</span><strong id="backendHealth">Checking...</strong></div>
+            </div>
+            <div class="workspace-grid">
+                <section class="panel panel-large">
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-kicker">Your Programming Request</p>
+                            <h3>Tell VoxCode what to build</h3>
+                        </div>
+                        <div class="language-box">
+                            <label for="languageSelect">Language</label>
+                            <select id="languageSelect">
+                                <option value="Python">Python</option>
+                                <option value="C++">C++</option>
+                                <option value="Java">Java</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="instruction-tools">
+                        <button id="voiceButton" class="action-btn glow-btn">Speak</button>
+                        <button id="generateButton" class="action-btn">Generate</button>
+                        <button id="refineButton" class="action-btn">Refine</button>
+                        <button id="explainButton" class="action-btn">Explain</button>
+                        <button id="runButton" class="action-btn success-btn">Run Code</button>
+                        <button id="copyButton" class="action-btn">Copy</button>
+                        <button id="clearButton" class="action-btn danger-btn">Clear</button>
+                    </div>
+                    <textarea id="instructionInput" class="instruction-input" placeholder="Try: create a Python program to print prime numbers from 1 to 100"></textarea>
+                    <div class="refine-box">
+                        <label for="refineInput">Refinement Instruction</label>
+                        <input id="refineInput" type="text" placeholder="add comments, optimize it, make it recursive, add input validation">
+                    </div>
+                </section>
+                <section class="panel panel-compact">
+                    <div class="panel-header compact-header">
+                        <div>
+                            <p class="panel-kicker">Demo Status</p>
+                            <h3>What is ready now</h3>
+                        </div>
+                    </div>
+                    <div class="telemetry-list">
+                        <div class="telemetry-item"><span>Selected Language</span><strong id="selectedLanguage">Python</strong></div>
+                        <div class="telemetry-item"><span>Voice Engine</span><strong id="voiceSupport">Checking...</strong></div>
+                        <div class="telemetry-item"><span>Model Endpoint</span><strong>Ollama / deepseek-coder</strong></div>
+                        <div class="telemetry-item"><span>Execution Mode</span><strong id="executionMode">Python runtime enabled</strong></div>
+                    </div>
+                    <div class="mini-note" id="helperMessage">
+                        Speak a small programming task, or type it here before your viva. VoxCode will put the result in the editor first.
+                    </div>
+                </section>
+            </div>
+            <div class="editor-grid">
+                <section class="panel editor-panel">
+                    <div class="panel-header compact-header">
+                        <div>
+                            <p class="panel-kicker">Generated Code</p>
+                            <h3>Source Code Editor</h3>
+                        </div>
+                    </div>
+                    <p class="editor-note">The code in this editor is what runs. You can change it before pressing Run.</p>
+                    <div class="editor-wrapper">
+                        <div id="lineNumbers" class="line-numbers" aria-hidden="true">1</div>
+                        <textarea id="codeEditor" class="code-editor" spellcheck="false"># Generated code will appear here...</textarea>
+                    </div>
+                </section>
+                <section class="panel console-panel">
+                    <div class="panel-header compact-header">
+                        <div>
+                            <p class="panel-kicker">Program Output</p>
+                            <h3>Output Console</h3>
+                        </div>
+                        <span id="executionTime" class="small-badge">0.000s</span>
+                    </div>
+                    <pre id="outputConsole" class="console success-console">Your program output will appear here...</pre>
+                </section>
+                <section class="panel console-panel">
+                    <div class="panel-header compact-header">
+                        <div>
+                            <p class="panel-kicker">Compiler Messages</p>
+                            <h3>Error Console</h3>
+                        </div>
+                    </div>
+                    <pre id="errorConsole" class="console error-console">Errors and compiler messages will appear here...</pre>
+                </section>
+                <section class="panel explanation-panel">
+                    <div class="panel-header compact-header">
+                        <div>
+                            <p class="panel-kicker">AI Explanation</p>
+                            <h3>Code Understanding Panel</h3>
+                        </div>
+                    </div>
+                    <div id="explanationPanel" class="explanation-content">Ask for an explanation when you want to describe the code during viva.</div>
+                </section>
+            </div>
+        </section>
+
+        <section id="about" class="info-section">
+            <div class="section-heading">
+                <span class="section-label">About Project</span>
+                <h2>Built for Compiler Design Evaluation</h2>
+                <p>VoxCode AI Compiler is designed as an academic demonstration of how modern AI can emulate phases of a compiler-inspired workflow: taking source input, interpreting intent, generating code, executing it, and presenting output or errors through clear runtime feedback.</p>
+            </div>
+            <div class="info-cards three-up">
+                <article class="info-card"><h3>Voice to Code</h3><p>Capture spoken programming instructions through browser speech recognition and convert them into editable source prompts.</p></article>
+                <article class="info-card"><h3>AI Code Generation</h3><p>Use the local Ollama API with the deepseek-coder model to generate clean source code in Python, C++, or Java.</p></article>
+                <article class="info-card"><h3>Compiler-Like Execution</h3><p>Run Python code through the backend, then present runtime output, diagnostics, and execution status in dedicated consoles.</p></article>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <div class="section-heading"><span class="section-label">Key Features</span><h2>Visible AI Innovation Features</h2></div>
+            <div class="info-cards four-up">
+                <article class="info-card"><h3>Voice Input</h3><p>Starts browser speech recognition and fills the instruction box directly.</p></article>
+                <article class="info-card"><h3>Refine Code</h3><p>Improves existing code using short commands like add comments or optimize it.</p></article>
+                <article class="info-card"><h3>Explain Code</h3><p>Generates simple step-by-step explanations for beginners and project evaluators.</p></article>
+                <article class="info-card"><h3>Error Feedback</h3><p>Highlights syntax errors, runtime errors, timeouts, and unsupported execution modes cleanly.</p></article>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <div class="section-heading"><span class="section-label">How It Works</span><h2>Project Workflow</h2></div>
+            <div class="workflow-line">
+                <div>1. Speak or type programming instruction</div>
+                <div>2. Convert voice to text</div>
+                <div>3. Send intent to FastAPI backend</div>
+                <div>4. Generate or refine code using Ollama</div>
+                <div>5. Display code in editor</div>
+                <div>6. Run Python code and capture output or errors</div>
+            </div>
+        </section>
+
+        <section class="info-section theory-section">
+            <div class="section-heading">
+                <span class="section-label">Compiler Design Relevance</span>
+                <h2>Why This Fits Compiler Design</h2>
+                <p>This project demonstrates concepts inspired by compiler design in a simple student-friendly way.</p>
+            </div>
+            <div class="theory-grid">
+                <div class="pipeline-visual">
+                    <div>Voice Input</div><span>to</span><div>Speech Recognition</div><span>to</span><div>Instruction Parsing</div><span>to</span><div>AI Code Generation</div><span>to</span><div>Code Execution</div><span>to</span><div>Output / Error Display</div>
+                </div>
+                <div class="theory-points">
+                    <article class="info-card"><h3>Source Input Processing</h3><p>The user instruction acts like a high-level source program entering the system.</p></article>
+                    <article class="info-card"><h3>Parsing User Intent</h3><p>Speech recognition and prompt engineering work together to interpret what program the user wants.</p></article>
+                    <article class="info-card"><h3>Intermediate AI Code Generation</h3><p>The AI model converts the parsed intent into structured source code that can be executed.</p></article>
+                    <article class="info-card"><h3>Execution and Error Handling</h3><p>The backend runs code, captures output, reports syntax or runtime errors, and displays compiler-style feedback.</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <div class="section-heading"><span class="section-label">Team Roles</span><h2>Project Responsibility Distribution</h2></div>
+            <div class="team-grid">
+                <article class="team-card">
+                    <h3>Member 1 - AI & Backend Developer</h3>
+                    <ul>
+                        <li>FastAPI backend</li><li>AI model integration</li><li>Prompt engineering</li><li>Code generation logic</li><li>Code execution logic</li>
+                    </ul>
+                </article>
+                <article class="team-card">
+                    <h3>Member 2 - Frontend & UI Developer</h3>
+                    <ul>
+                        <li>Website design</li><li>Compiler workspace UI</li><li>Speech recognition integration</li><li>Code editor interface</li><li>Responsive layout</li>
+                    </ul>
+                </article>
+                <article class="team-card">
+                    <h3>Member 3 - Integration & Testing Engineer</h3>
+                    <ul>
+                        <li>API integration</li><li>Frontend-backend communication</li><li>Error handling</li><li>Output console testing</li><li>Feature validation</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section class="info-section">
+            <div class="section-heading"><span class="section-label">Tech Stack</span><h2>Implementation Stack</h2></div>
+            <div class="stack-grid">
+                <div class="info-card"><h3>Frontend</h3><p>HTML, CSS, JavaScript, Web Speech API</p></div>
+                <div class="info-card"><h3>Backend</h3><p>Python, FastAPI, Uvicorn</p></div>
+                <div class="info-card"><h3>AI Layer</h3><p>Ollama local API, deepseek-coder model</p></div>
+                <div class="info-card"><h3>Execution</h3><p>Python subprocess runtime with timeout, stdout, stderr capture</p></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>VoxCode AI Compiler | College Compiler Design Project</p>
+        <p>Designed as an AI-assisted voice-based code compiler and execution environment.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
